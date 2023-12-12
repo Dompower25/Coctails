@@ -12,6 +12,7 @@ const props = defineProps({
     <div :style="`background-image: url(${imgUrl})`" class="img"></div>
     <div class="main">
       <el-button class="main_btn">Get random cocktail</el-button>
+      <slot></slot>
     </div>
   </div>
 </template>
@@ -27,7 +28,7 @@ const props = defineProps({
 
   .img {
     width: 50%;
-    
+
     background-repeat: no-repeat;
     background-position: 50% 50%;
     background-size: cover;
@@ -38,12 +39,20 @@ const props = defineProps({
     padding: 32px 40px;
 
     .main_btn {
-        position: absolute;
-        top: 32px;
-        right: 40px;
-        border-color: $accent;
-        background-color: $accent;
-        color: $text;
+      position: absolute;
+      top: 32px;
+      right: 40px;
+      font-size: 16px;
+      font-family: 'Raleway', 'Arial', sans-serif;
+      border-color: $accent;
+      background-color: $accent;
+      color: $text;
+
+      &:hover,
+      &:active {
+        background-color: darken($color: $accent, $amount: 10%);
+        border-color: darken($color: $accent, $amount: 10%);
+      }
     }
   }
 }
