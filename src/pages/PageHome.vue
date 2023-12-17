@@ -1,5 +1,6 @@
 <script setup>
 import AppLayout from '../components/AppLayout.vue'
+import CocktailThumb from '../components/CocktailThumb.vue'
 import { useRootStore } from '@/stores/root'
 import { storeToRefs } from 'pinia'
 import { ref } from 'vue'
@@ -46,6 +47,13 @@ function getCocktails() {
       <div v-else class="info">
         <div class="title">Cocktails with {{ ingredient }}</div>
         <div class="line"></div>
+        <div class="cocktails">
+          <CocktailThumb
+            v-for="cocktail in cocktails"
+            :key="cocktail.idDrink"
+            :cocktail="cocktail"
+          />
+        </div>
       </div>
     </div>
   </AppLayout>
@@ -62,7 +70,7 @@ function getCocktails() {
   align-items: center;
 
   .info {
-    padding: 80px 0;
+    padding: 80px 0 0;
     text-align: center;
 
     .selectWrapper {
@@ -82,6 +90,15 @@ function getCocktails() {
     }
     .img {
       padding-top: 60px;
+    }
+    .cocktails {
+      max-height: 500px;
+      overflow-y: auto;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 60px; 
     }
   }
 }
