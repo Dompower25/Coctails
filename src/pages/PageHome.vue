@@ -3,31 +3,39 @@ import AppLayout from '../components/AppLayout.vue'
 import CocktailThumb from '../components/CocktailThumb.vue'
 import { useRootStore } from '@/stores/root'
 import { storeToRefs } from 'pinia'
-import { ref } from 'vue'
 
 const rootStore = useRootStore()
 rootStore.getIngredients()
 
-const { ingredients, cocktails } = storeToRefs(rootStore)
-const ingredient = ref(null)
+const { ingredients, ingredient, cocktails } = storeToRefs(rootStore)
 
 function getCocktails() {
-  rootStore.getCocktailsByIngredients(ingredient.value)
+  rootStore.getCocktailsByIngredients(rootStore.ingredient)
+}
+
+function removeIngredient() {
+  rootStore.setIngredient(null)
 }
 </script>
 
 <template>
-  <AppLayout imgUrl="/src/assets/img/Cocktail_home_page_min.jpg">
+  <AppLayout
+    imgUrl="/src/assets/img/Cocktail_home_page_min.jpg"
+    :backFunc="removeIngredient"
+    :is-back-button-visible="!!ingredient"
+  >
     <div class="wrapper">
       <div v-if="!ingredient || !cocktails" class="info">
         <div class="title">Choose your drink</div>
         <div class="line"></div>
         <div class="selectWrapper">
           <el-select
-            v-model="ingredient"
+            v-model="rootStore.ingredient"
             class="elSelect"
             placeholder="Choose main ingredient"
             size="large"
+            filterable
+            allow-create
             @change="getCocktails"
           >
             <el-option
@@ -63,43 +71,31 @@ function getCocktails() {
 @import '../assets/styles/main';
 @import '../assets/styles/variables.scss';
 
-.wrapper {
+.selectWrapper {
+  padding-top: 50px;
+
+  .elSelect {
+    width: 220px;
+  }
+}
+.text {
+  max-width: 516px;
+  margin: 0 auto;
+  padding-top: 50px;
+  letter-spacing: 0.1em;
+  line-height: 36px;
+  color: $textMuted;
+}
+.img {
+  padding-top: 60px;
+}
+.cocktails {
+  max-height: 500px;
+  overflow-y: auto;
   display: flex;
-  flex-direction: column;
+  flex-wrap: wrap;
   justify-content: center;
   align-items: center;
-
-  .info {
-    padding: 80px 0 0;
-    text-align: center;
-
-    .selectWrapper {
-      padding-top: 50px;
-
-      .elSelect {
-        width: 220px;
-      }
-    }
-    .text {
-      max-width: 516px;
-      margin: 0 auto;
-      padding-top: 50px;
-      letter-spacing: 0.1em;
-      line-height: 36px;
-      color: $textMuted;
-    }
-    .img {
-      padding-top: 60px;
-    }
-    .cocktails {
-      max-height: 500px;
-      overflow-y: auto;
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: space-between;
-      align-items: center;
-      margin-top: 60px; 
-    }
-  }
+  margin-top: 60px;
 }
 </style>
